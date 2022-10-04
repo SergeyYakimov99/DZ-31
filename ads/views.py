@@ -164,7 +164,7 @@ class AdDeleteView(DeleteView):
         super().delete(request, *args, **kwargs)
         return JsonResponse({}, status=204)
 
-
+@method_decorator(csrf_exempt, name='dispatch')
 class AdUploadImageView(UpdateView):
     model = Ad
     fields = ['image']
