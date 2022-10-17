@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
@@ -25,14 +26,11 @@ class UserRoles:
     )
 
 
-class User(models.Model):
-    first_name = models.CharField(verbose_name='Имя', help_text='Введите имя пользователя', max_length=60)
-    last_name = models.CharField(max_length=60)
-    username = models.CharField(verbose_name='Ник', max_length=20)
-    password = models.CharField(max_length=20)
+class User(AbstractUser):
     role = models.CharField(choices=UserRoles.choices, default='member', max_length=12)
-    age = models.PositiveIntegerField()
-    location_id = models.ManyToManyField(Location)
+    age = models.PositiveIntegerField(null=True)
+    locations = models.ManyToManyField(Location)
+
 
     class Meta:
         verbose_name = "Пользователь"
@@ -65,6 +63,18 @@ class Ad(models.Model):
     is_published = models.BooleanField(default=False)
     image = models.ImageField(upload_to='pictures', blank=True, null=True)
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL, related_name='ads')
+
+    def __str__(self):
+        return self.name
+
+
+class Selection(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='selections')
+    name = models.CharField(max_length=100, unique=True)
+    items = models.ManyToManyField(Ad)
+    class Meta:
+        verbose_name = "Подборка объявлений"
+        verbose_name_plural = "Подборки объявлений"
 
     def __str__(self):
         return self.name

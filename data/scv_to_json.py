@@ -32,12 +32,15 @@ def convert_file(csv_file, json_file, model_name):
                 row['price'] = int(row['price'])
             if 'author_id' in row:
                 row['author'] = int(row['author_id'])
+                del row['author_id']
             if 'category_id' in row:
                 row['category'] = int(row['category_id'])
+                del row['category_id']
             if 'age' in row:
                 row['age'] = int(row['age'])
-            if 'location_id' in row:
-                row['location_id'] = (int(row['location_id']),)
+            if 'location' in row:
+                row['locations'] = [int(row['location'])]
+                del row['location']
 
             to_add['fields'] = row
             result.append(to_add)
@@ -45,7 +48,7 @@ def convert_file(csv_file, json_file, model_name):
         json_f.write(json.dumps(result, ensure_ascii=False))
 
 
-convert_file(DATA_CATEGORIES, JSON_CATEGORIES, 'ads.category')
+# convert_file(DATA_CATEGORIES, JSON_CATEGORIES, 'ads.category')
 convert_file(DATA_ADS, JSON_ADS, 'ads.ad')
-convert_file(DATA_LOCATION, JSON_LOCATION, 'ads.location')
-convert_file(DATA_USER, JSON_USER, 'ads.user')
+#convert_file(DATA_LOCATION, JSON_LOCATION, 'ads.location')
+#convert_file(DATA_USER, JSON_USER, 'ads.user')

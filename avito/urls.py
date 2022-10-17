@@ -9,11 +9,13 @@ from users.views import LocationViewSet
 
 router = SimpleRouter()
 router.register('location', LocationViewSet)
+router.register('category', CategoryViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', root),
-    path('cat/', include('ads.urls.cat_urls')),
+    path('selection/', include('ads.urls.selection_urls')),
+#    path('cat/', include('ads.urls.cat_urls')),
     path('ad/', include('ads.urls.ad_urls')),
     path('user/', include('users.urls')),
 ]
