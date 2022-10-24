@@ -1,9 +1,22 @@
 from rest_framework import serializers
-
 from ads.models import Ad, Selection, User, Category
 
 
+def is_published_validator(value):
+    if value:
+        raise serializers.ValidationError('is_published должно быть True')
+    return value
+
+
 class AdListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ad
+        fields = '__all__'
+
+
+class AdCreateSerializer(serializers.ModelSerializer):
+    is_published = serializers.BooleanField(validators=[is_published_validator], required=False)
+
     class Meta:
         model = Ad
         fields = '__all__'
